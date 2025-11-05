@@ -1,0 +1,57 @@
+# TCL/Tk Program: Two List Boxes Interaction
+# When an item in listbox1 is clicked → copied to listbox2
+# When an item in listbox2 is clicked → removed
+
+# Create main window
+wm title . "Two List Boxes Example"
+
+# Create frames for better layout
+frame .f1
+frame .f2
+pack .f1 .f2 -side top -padx 10 -pady 10
+
+# Label for first listbox
+label .f1.l1 -text "Available Items"
+listbox .f1.lb1 -width 25 -height 10 -selectmode single
+scrollbar .f1.sb1 -orient vertical -command ".f1.lb1 yview"
+.f1.lb1 configure -yscrollcommand ".f1.sb1 set"
+
+pack .f1.l1 -side top
+pack .f1.lb1 .f1.sb1 -side left -fill y
+
+# Add some sample items
+foreach item {Apple Banana Mango Orange Grapes Pineapple Watermelon Papaya Kiwi} {
+    .f1.lb1 insert end $item
+}
+
+# Label for second listbox
+label .f2.l2 -text "Selected Items"
+listbox .f2.lb2 -width 25 -height 10 -selectmode single
+scrollbar .f2.sb2 -orient vertical -command ".f2.lb2 yview"
+.f2.lb2 configure -yscrollcommand ".f2.sb2 set"
+
+pack .f2.l2 -side top
+pack .f2.lb2 .f2.sb2 -side left -fill y
+
+# -----------------------------------
+# Event bindings
+# -----------------------------------
+
+# When user clicks an item in first listbox → copy it to second listbox
+bind .f1.lb1 <<ListboxSelect>> {
+    set selected [.f1.lb1 get [.f1.lb1 curselection]]
+    if {[lsearch [.f2.lb2 get 0 end] $selected] == -1} {
+        .f2.lb2 insert end $selected
+    }
+}
+
+# When user clicks an item in second listbox → remove it
+bind .f2.lb2 <<ListboxSelect>> {
+    set index [.f2.lb2 curselection]
+    if {$index ne ""} {
+        .f2.lb2 delete $index
+    }
+}
+
+# Run the main event loop
+tkwait window
