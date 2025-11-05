@@ -1,0 +1,96 @@
+# Ruby Program: Vehicle Management System
+# Demonstrates inheritance and code reuse in Ruby
+
+# -------------------------------
+# Base Class
+# -------------------------------
+class Vehicle
+  attr_accessor :brand, :model, :mileage, :fuel_level
+
+  def initialize(brand, model)
+    @brand = brand
+    @model = model
+    @mileage = 0
+    @fuel_level = 100
+  end
+
+  def start
+    puts "#{@brand} #{@model} is starting..."
+  end
+
+  def stop
+    puts "#{@brand} #{@model} is stopping..."
+  end
+
+  def refuel(amount)
+    @fuel_level += amount
+    @fuel_level = 100 if @fuel_level > 100
+    puts "#{@brand} #{@model} refueled. Current fuel level: #{@fuel_level}%"
+  end
+
+  def drive(distance)
+    if @fuel_level > 10
+      @mileage += distance
+      @fuel_level -= distance * 0.5
+      puts "#{@brand} #{@model} drove #{distance} km. Total mileage: #{@mileage} km. Fuel left: #{@fuel_level}%"
+    else
+      puts "⚠️ Low fuel! Please refuel #{@brand} #{@model}."
+    end
+  end
+end
+
+# -------------------------------
+# Derived Class: Car
+# -------------------------------
+class Car < Vehicle
+  def open_trunk
+    puts "Opening trunk of #{@brand} #{@model} 🚗"
+  end
+end
+
+# -------------------------------
+# Derived Class: Truck
+# -------------------------------
+class Truck < Vehicle
+  attr_accessor :cargo_weight
+
+  def load_cargo(weight)
+    @cargo_weight = weight
+    puts "#{@brand} #{@model} loaded with #{weight} kg of cargo 🚛"
+  end
+end
+
+# -------------------------------
+# Derived Class: Motorcycle
+# -------------------------------
+class Motorcycle < Vehicle
+  def wheelie
+    puts "#{@brand} #{@model} performs a wheelie! 🏍️"
+  end
+end
+
+# -------------------------------
+# Program Execution (Sample Run)
+# -------------------------------
+
+car = Car.new("Toyota", "Innova")
+truck = Truck.new("Tata", "LPT 1618")
+bike = Motorcycle.new("Yamaha", "R15")
+
+car.start
+car.drive(20)
+car.open_trunk
+car.stop
+puts "-------------------------------"
+
+truck.start
+truck.load_cargo(500)
+truck.drive(15)
+truck.refuel(20)
+truck.stop
+puts "-------------------------------"
+
+bike.start
+bike.drive(10)
+bike.wheelie
+bike.stop
