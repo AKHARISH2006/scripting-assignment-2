@@ -1,0 +1,49 @@
+# Ruby Program: Basic Bank Account
+
+class BankAccount
+  attr_reader :balance  # allows reading balance outside the class
+
+  # Initialize account with optional starting balance (default 0)
+  def initialize(initial_balance = 0)
+    @balance = initial_balance
+  end
+
+  # Method to deposit money into the account
+  def add_balance(amount)
+    if amount > 0
+      @balance += amount
+      puts "Successfully deposited ₹#{amount}. Current balance: ₹#{@balance}"
+    else
+      puts "❌ Error: Deposit amount must be positive."
+    end
+  end
+
+  # Method to withdraw money from the account
+  def withdraw(amount)
+    if amount > 0 && amount <= @balance
+      @balance -= amount
+      puts "Successfully withdrawn ₹#{amount}. Remaining balance: ₹#{@balance}"
+    elsif amount > @balance
+      puts "❌ Error: Insufficient balance."
+    else
+      puts "❌ Error: Withdrawal amount must be positive."
+    end
+  end
+
+  # Method to display current balance
+  def check_balance
+    puts "💰 Current balance: ₹#{@balance}"
+  end
+end
+
+# -------------------------------
+# Program Execution (Sample Run)
+# -------------------------------
+
+account = BankAccount.new(1000)  # initial balance ₹1000
+account.check_balance             # show current balance
+account.add_balance(500)          # deposit ₹500
+account.withdraw(300)             # withdraw ₹300
+account.add_balance(-200)         # invalid deposit
+account.withdraw(1500)            # insufficient balance
+account.check_balance             # final balance
